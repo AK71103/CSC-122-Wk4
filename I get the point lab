@@ -1,0 +1,110 @@
+//I get the point lab
+//Alexander w. Kazantzis
+//9-15-2026
+
+#include <iostream>
+#include <cmath>
+#include <stdexcept>
+using namespace std;
+
+// point class for X and Y coordinates
+class Point {
+private:
+    double x, y; // generic X and Y coordinates
+public:
+// input X and Y coordinates
+    Point(double x = 0, double y = 0) : x(x), y(y) {}
+
+    // getter for X coordinate
+    double getX() const { return x; }
+
+    // getter for Y coordinate
+    double getY() const { return y; }
+
+    // setter for X coordinate
+    void setX(double x) { this->x = x; }
+
+    // setter for Y coordinate
+    void setY(double y) { this->y = y; }
+    // override [] operator to allow the user to access the X and Y coordinates of a point using an index
+    double operator[](int index) const;
+};
+
+// Override - to calculate the distance between two points
+double operator-(const Point& p1, const Point& p2) {
+    double dx = p1.getX() - p2.getX();
+    double dy = p1.getY() - p2.getY();
+    return std::sqrt(dx * dx + dy * dy);
+}
+
+// override == operator to compare two points and return true if they are equal
+bool operator==(const Point& p1, const Point& p2) {
+    return (p1.getX() == p2.getX()) && (p1.getY() == p2.getY());
+}
+// override != operator to compare two points and return true if they are not equal
+bool operator!=(const Point& p1, const Point& p2) {
+    return !(p1 == p2);
+}
+// override / opertator to find the midpoint between two points
+Point operator/(const Point& p1, const Point& p2) {
+    double midX = (p1.getX() + p2.getX()) / 2;
+    double midY = (p1.getY() + p2.getY()) / 2;
+    return Point(midX, midY);
+}
+//override << operator on point so the user can stream the point as if it were a string
+std::ostream& operator<<(std::ostream& os, const Point& p) {
+    os << "(" << p.getX() << ", " << p.getY() << ")";
+    return os;
+}
+//override ++ operator to increment the X and Y coordinates of a point by 1
+Point& operator++(Point& p) {
+    p.setX(p.getX() + 1);
+    p.setY(p.getY() + 1);
+    return p;
+}
+//override -- operator to decrement the X and Y coordinates of a point by 1
+Point& operator--(Point& p) {
+    p.setX(p.getX() - 1);
+    p.setY(p.getY() - 1);
+    return p;
+}
+//allow point[0] to return the X coordinate and point[1] to return the Y coordinate
+double Point::operator[](int index) const {
+    if (index == 0) {
+        return x;
+    } else if (index == 1) {
+        return y;
+    } else {
+        throw std::out_of_range("Index out of range. Use 0 for X and 1 for Y.");
+    }
+}
+//override >> operator to allow the user to input a point as if it were a string
+std::istream& operator>>(std::istream& is, Point& p) {
+    double x, y;
+    is >> x >> y;
+    p.setX(x);
+    p.setY(y);
+    return is;
+}
+int main() {
+    double x1, y1;
+    double x2, y2;
+
+    Point p1(0, 0);  // first coordinates set
+    Point p2(0, 0); // second coordinates set
+
+    std::cout << "Enter your coordinates of the first point (x, y): ";
+    std::cin >> p1;
+    std::cout << "Enter your coordinates of the second point (x, y): ";
+    std::cin >> p2;
+   
+    // after both points are entered, display the points, the distance between them, the midpoint, and if the results are equal or not
+   
+    
+    std::cout << "First point: " << p1 << std::endl;
+    std::cout << "Second point: " << p2 << std::endl;
+    std::cout << "Distance between points: " << (p1 - p2) << std::endl;
+    std::cout << "Midpoint: " << (p1 / p2) << std::endl;
+    std::cout << "Points are equal: " << (p1 == p2 ? "Yes" : "No") << std::endl;
+    
+}
